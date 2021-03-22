@@ -109,4 +109,4 @@ loop do
   break if response == "n"
 end
 
-prompt("Thank you for using Mortgage Calcualtor. Goodbye.")
+prompt("Thank you for using Mortgage Calculator. Goodbye.")
