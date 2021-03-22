@@ -1,51 +1,112 @@
-require "pry"
+# Ask user for loan amount
+# ask user for interest rate
+# ask user for loan term
+# validate loan amount, rate, loan term
+# perform calculation for monthly payments
+# output monthly payments
 
-def validate_object(num)
-  (num.to_i.to_s == num || num.to_f.to_s == num) && num.to_i > 0
+# ------Validation Methods------
+def prompt(message)
+  puts "=> #{message}"
 end
 
-puts "Welcome to Mortgage Calculator!"
+def valid_loan?(loan)
+  loan.to_i.to_s == loan && loan.to_i > 0
+end
 
-loan = ''
+def valid_interest?(rate)
+  rate.to_f.to_s == rate && rate.to_f > 0.0
+end
+
+def interest_rate_convert(rate)
+  rate.to_f / 100
+end
+
+def valid_loan_term?(loan_term)
+  loan_term.to_i.to_s == loan_term && loan_term.to_i > 0
+end
+
+def monthly_interest_rate(interest_rate)
+  interest_rate / 12
+end
+
+def valid_response(answer)
+  answer == 'y' || answer == 'n'
+end
+response = ''
+
+prompt("Welcome to Mortage calculator.")
+puts "  ------------------------------"
+puts ""
+
+# ------Loan Validation Loop Start------
 loop do
-puts "Enter your loan amount (exclude commas):"
-loan = gets.chomp
+  loan_amount = ''
+  loop do
+    prompt("To begin, enter your loan amount, excluding commas:")
+    loan_amount = gets.chomp
 
-if validate_object(loan)
-  loan = loan.to_i
-  break
-else
-  puts "Invalid #{loan}."
-end
-end
-
-rate = ''
-loop do
-
-  puts "Enter your interest rate (as a percentage. For example = 4.0):"
-  rate = gets.chomp
-
-  if validate_object(rate)
-    rate = rate.to_f / 100
-    break
-  else
-    puts "Invalid #{rate}."
+    if valid_loan?(loan_amount)
+      loan_amount = loan_amount.to_f
+      break
+    else
+      prompt("Invalid input: #{loan_amount}.")
+    end
   end
-end
+  prompt("Loan Amount: $#{loan_amount}")
+  #-------Loan Validation Loop End  ------
 
-loan_term = ''
-loop do
+  #-----Rate Validation Loop Start------
+  interest_rate = ''
+  loop do
+    prompt("Enter your interest rate as a decimal(i.e 5% = 5.0):")
+    interest_rate = gets.chomp
 
-  puts "Enter your loan term in years:"
-  loan_term = gets.chomp
-
-  if validate_object(loan_term)
-    loan_term = loan_term.to_i * 12
-    break
-  else
-    puts "Invalid #{loan_term}."
+    if valid_interest?(interest_rate)
+      interest_rate = interest_rate_convert(interest_rate)
+      break
+    else
+      prompt("Invalid input: #{interest_rate}.")
+    end
   end
+  prompt("Interest Rate: #{interest_rate}")
+  #-------Rate Validation Loop End  ------
+
+  #-------Loan Term Validation Start------
+  loan_term = ''
+  loop do
+    prompt("Enter your loan term:")
+    loan_term = gets.chomp
+
+    if valid_loan_term?(loan_term)
+      loan_term = loan_term.to_i * 12
+      break
+    else
+      prompt("Invalid loan term: #{loan_term}.")
+    end
+  end
+  #-------Loan Term Validation End--------
+
+  prompt("Loan duration: #{loan_term} months")
+
+  #-------Monthly Payment Validation------
+  monthly_rate = monthly_interest_rate(interest_rate)
+  monthly_payments = loan_amount *
+                     (monthly_rate / (1 - (1 + monthly_rate)**(-loan_term)))
+
+  puts "Your monthly bill is: $#{monthly_payments.round(2)}."
+
+  #-------Repeat Calculator Loop----------
+  prompt("Would you like to continue with another calculation? (y,n)")
+  loop do
+    response = gets.chomp.downcase
+    valid_response(response)
+    break if response == 'y' || response == 'n'
+    puts "Invalid input. Enter (y) or (n):"
+    response
+  end
+
+  break if response == "n"
 end
-monthly_rate = rate * loan / 12
-monthly_bill = loan * monthly_rate / 1 - (1 + monthly_rate)**(-loan_term)
-p monthly_bill
+
+prompt("Thank you for using Mortgage Calcualtor. Goodbye.")
