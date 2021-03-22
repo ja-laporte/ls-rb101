@@ -39,8 +39,8 @@ prompt("Welcome to Mortage calculator.")
 puts "  ------------------------------"
 puts ""
 
-# ------Loan Validation Loop Start------
 loop do
+  # ------Loan Validation Loop Start------
   loan_amount = ''
   loop do
     prompt("To begin, enter your loan amount, excluding commas:")
