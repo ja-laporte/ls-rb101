@@ -59,7 +59,7 @@ loop do
   #-----Rate Validation Loop Start------
   interest_rate = ''
   loop do
-    prompt("Enter your interest rate as a decimal(i.e 5% = 5.0):")
+    prompt("Enter your interest rate as a decimal(i.e 5 = 5.0):")
     interest_rate = gets.chomp
 
     if valid_interest?(interest_rate)
