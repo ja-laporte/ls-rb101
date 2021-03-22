@@ -107,6 +107,7 @@ loop do
   end
 
   break if response == "n"
+  system('clear')
 end
 
 prompt("Thank you for using Mortgage Calculator. Goodbye.")
