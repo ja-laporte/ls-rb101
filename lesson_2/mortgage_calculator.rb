@@ -4,7 +4,7 @@
 # validate loan amount, rate, loan term
 # perform calculation for monthly payments
 # output monthly payments
-
+system('clear')
 # ------Validation Methods------
 def prompt(message)
   puts "=> #{message}"
@@ -12,6 +12,10 @@ end
 
 def valid_loan?(loan)
   loan.to_i.to_s == loan && loan.to_i > 0
+end
+
+def format_loan_amount(num)
+  format('%.2f', num)
 end
 
 def valid_interest?(rate)
@@ -53,8 +57,7 @@ loop do
       prompt("Invalid input: #{loan_amount}.")
     end
   end
-  prompt("Loan Amount: $#{loan_amount}")
-  #-------Loan Validation Loop End  ------
+  prompt("Loan Amount: $#{format_loan_amount(loan_amount)}")
 
   #-----Rate Validation Loop Start------
   interest_rate = ''
@@ -63,13 +66,14 @@ loop do
     interest_rate = gets.chomp
 
     if valid_interest?(interest_rate)
+      prompt("Interest Rate: #{interest_rate}%")
       interest_rate = interest_rate_convert(interest_rate)
       break
     else
       prompt("Invalid input: #{interest_rate}.")
     end
   end
-  prompt("Interest Rate: #{interest_rate}")
+  # prompt("Interest Rate: #{interest_rate}")
   #-------Rate Validation Loop End  ------
 
   #-------Loan Term Validation Start------
@@ -109,5 +113,5 @@ loop do
   break if response == "n"
   system('clear')
 end
-
+system('clear')
 prompt("Thank you for using Mortgage Calculator. Goodbye.")
