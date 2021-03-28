@@ -214,8 +214,8 @@ Metrics/AbcSize:
   Description: >-
                  A calculated magnitude based on number of assignments,
                  branches, and conditions.
-  Enabled: true
-  Max: 18
+  Enabled: false
+  Max: 36
 
 Metrics/BlockLength:
   Description: Limit size of blocks.
@@ -237,7 +237,7 @@ Layout/LineLength:
 
 Metrics/MethodLength:
   Description: 'Avoid methods longer than 15 lines of code.'
-  Enabled: true
+  Enabled: false
   CountComments: false  # count full line comments?
   Max: 15
 
