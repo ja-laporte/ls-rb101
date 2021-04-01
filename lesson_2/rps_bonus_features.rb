@@ -15,7 +15,6 @@ WELCOME = <<-WELCOME
 Welcome to Rock, Paper, Scissors, Spock, Lizard!
    ------------------------------------------------
    
-=> Would you like to play? (y,n)
 WELCOME
 
 system('clear')
@@ -30,8 +29,8 @@ def username_blank?(name)
 end
 
 # Boolean == true to play
-def game_start?(choice)
-  choice == 'y' || choice == 'yes'
+def game_start_valid?(choice)
+  choice == 'y' || choice == 'yes' || choice == 'n' || choice == 'no'
 end
 
 def valid_options?(choice)
@@ -75,6 +74,8 @@ end
 
 prompt(WELCOME)
 player = ''
+play_response = ''
+
 loop do
   prompt("Please enter a username:")
   player = gets.chomp
@@ -84,22 +85,39 @@ loop do
 end
 
 prompt("Hi, #{player}!")
-player_pick = ''
 loop do
-  prompt("Choose: #{DEFAULTS.join(', ')} or #{ALTERNATES.join(', ')}")
-  player_pick = gets.chomp.downcase
-  if valid_options?(player_pick)
-    break
-  elsif valid_alt_options?(player_pick)
-    player_pick = alt_choice_convert(player_pick)
-    break
-  else
-    prompt("Invalid input.")
+  player_pick = ''
+  loop do
+    prompt("Choose: #{DEFAULTS.join(', ')} or #{ALTERNATES.join(', ')}")
+    player_pick = gets.chomp.downcase
+    if valid_options?(player_pick)
+      break
+    elsif valid_alt_options?(player_pick)
+      player_pick = alt_choice_convert(player_pick)
+      break
+    else
+      prompt("Invalid input.")
+    end
   end
+
+  prompt("Player chose: #{player_pick} - Computer chose: #{CPU_CHOICE}")
+
+  p results(player_pick, CPU_CHOICE)
+
+  loop do
+    prompt("Would you like to play again?")
+    play_response = gets.chomp.downcase
+
+    break if game_start_valid?(play_response)
+    prompt("Invalid option. Enter y, yes, n, or no")
+  end
+
+  break if play_response == 'n' || play_response == 'no'
 end
+system("clear")
+prompt('Thanks for playing! Good bye!!!')
 
-prompt("Player chose: #{player_pick} - Computer chose: #{CPU_CHOICE}")
-
-results(player_pick, CPU_CHOICE)
-
-# Create break out loop to wrap game in
+# Create counter for matches
+# Create loop for best out of 5 rounds
+# create ultimate winner method
+# display ultimate winner
