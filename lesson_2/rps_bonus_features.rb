@@ -102,7 +102,7 @@ loop do
 
   prompt("Player chose: #{player_pick} - Computer chose: #{CPU_CHOICE}")
 
-  p results(player_pick, CPU_CHOICE)
+  results(player_pick, CPU_CHOICE)
 
   loop do
     prompt("Would you like to play again?")
