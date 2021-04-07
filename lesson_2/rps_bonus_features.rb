@@ -1,5 +1,6 @@
 DEFAULTS = ['rock', 'paper', 'scissors', 'spock', 'lizard']
 ALTERNATES = ['r', 'p', 'sc', 'sp', 'l']
+BEGIN_GAME_RESPONSE = %w[y yes n no]
 
 WIN = {
   'rock' => ['scissors', 'lizard'],
@@ -9,38 +10,30 @@ WIN = {
   'lizard' => ['paper', 'spock']
 }
 
-CPU_CHOICE = DEFAULTS.sample
-
 WELCOME = <<-WELCOME
 Welcome to Rock, Paper, Scissors, Spock, Lizard!
    ------------------------------------------------
-   
 WELCOME
-
 system('clear')
 
 def prompt(message)
   puts("=> #{message}")
 end
 
-# Boolean == true if blank
 def username_blank?(name)
   name.empty?
 end
 
-# Boolean == true to play
 def game_start_valid?(choice)
-  choice == 'y' || choice == 'yes' || choice == 'n' || choice == 'no'
+  BEGIN_GAME_RESPONSE.include?(choice)
 end
 
 def valid_options?(choice)
-  picks = ['rock', 'paper', 'scissors', 'spock', 'lizard']
-  picks.include?(choice)
+  DEFAULTS.include?(choice)
 end
 
 def valid_alt_options?(choice)
-  picks = ['r', 'p', 'sc', 'sp', 'l']
-  picks.include?(choice)
+  ALTERNATES.include?(choice)
 end
 
 def alt_choice_convert(choice)
@@ -62,7 +55,7 @@ def winner(first, second)
   WIN[first].include?(second)
 end
 
-def results(player, cpu)
+def show_results(player, cpu)
   if winner(player, cpu)
     prompt("You win!")
   elsif winner(cpu, player)
@@ -71,6 +64,32 @@ def results(player, cpu)
     prompt("Tie!")
   end
 end
+
+def score_count(player, computer, score)
+  if winner(player, computer)
+    score[:player] += 1
+  elsif winner(computer, player)
+    score[:cpu] += 1
+  end
+end
+
+def display_champion(score)
+  if score[:player] == 5
+    prompt("You're a Wizard, Harry! Way to go CHAMP!")
+  elsif score[:cpu] == 5
+    prompt('Beep, Boop. CPU is the Champion')
+  end
+end
+
+def score_reset(score)
+  score[:player] = 0
+  score[:cpu] = 0
+end
+
+score = {
+  player: 0,
+  cpu: 0
+}
 
 prompt(WELCOME)
 player = ''
@@ -86,23 +105,32 @@ end
 
 prompt("Hi, #{player}!")
 loop do
-  player_pick = ''
   loop do
-    prompt("Choose: #{DEFAULTS.join(', ')} or #{ALTERNATES.join(', ')}")
-    player_pick = gets.chomp.downcase
-    if valid_options?(player_pick)
-      break
-    elsif valid_alt_options?(player_pick)
-      player_pick = alt_choice_convert(player_pick)
-      break
-    else
-      prompt("Invalid input.")
+    player_pick = ''
+    cpu_choice = DEFAULTS.sample
+    loop do
+      prompt("Choose: #{DEFAULTS.join(', ')} or #{ALTERNATES.join(', ')}")
+      player_pick = gets.chomp.downcase
+      if valid_options?(player_pick)
+        break
+      elsif valid_alt_options?(player_pick)
+        player_pick = alt_choice_convert(player_pick)
+        break
+      else
+        prompt("Invalid input.")
+      end
     end
+    system("clear")
+
+    prompt("Player chose: #{player_pick} - Computer chose: #{cpu_choice}")
+    show_results(player_pick, cpu_choice)
+    score_count(player_pick, cpu_choice, score)
+    prompt("Score \n You: #{score[:player]} \n CPU: #{score[:cpu]}")
+    break if score[:player] == 5 || score[:cpu] == 5
   end
-
-  prompt("Player chose: #{player_pick} - Computer chose: #{CPU_CHOICE}")
-
-  results(player_pick, CPU_CHOICE)
+  system("clear")
+  display_champion(score)
+  score_reset(score)
 
   loop do
     prompt("Would you like to play again?")
@@ -116,8 +144,3 @@ loop do
 end
 system("clear")
 prompt('Thanks for playing! Good bye!!!')
-
-# Create counter for matches
-# Create loop for best out of 5 rounds
-# create ultimate winner method
-# display ultimate winner
