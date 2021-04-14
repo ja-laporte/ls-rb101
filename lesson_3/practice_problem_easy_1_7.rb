@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 # If we build an array like this:
 
-flintstones = ["Fred", "Wilma"]
-flintstones << ["Barney", "Betty"]
-flintstones << ["BamBam", "Pebbles"]
+flintstones = %w[Fred Wilma]
+flintstones << %w[Barney Betty]
+flintstones << %w[BamBam Pebbles]
 
 # We will end up with this "nested" array:
 
-["Fred", "Wilma", ["Barney", "Betty"], ["BamBam", "Pebbles"]]
+# ['Fred', 'Wilma', %w[Barney Betty], %w[BamBam Pebbles]]
 
 # Make this into an un-nested array.
 flintstones.flatten!
