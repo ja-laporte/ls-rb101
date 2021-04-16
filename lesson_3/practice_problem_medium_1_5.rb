@@ -11,7 +11,9 @@ def fib(first_num, second_num)
   sum
 end
 
-result = fib(0, 1)
+result = fib(2, 1)
 puts "result is #{result}"
 
 # How would you fix this so that it works?
+# The parameter for the limit variable was not defined in the method definition in order for use to be able to use it, and subsequently, not called. 
+# Add the paramter in the method definition, and pass the argument.
