@@ -13,4 +13,5 @@ end
 p bar(foo)
 # My answer:
 # This would return "yes" <- Incorrect
-# The foo method returns "yes", so when passed into the bar method, the paramater is changed to the return value of "yes" resulting in the ternary operator evaluating to false, which in turn returns "no".
+# The foo method returns "yes", so when passed into the bar method, the paramater is changed to the return value of
+# "yes" resulting in the ternary operator evaluating to false, which in turn returns "no".
